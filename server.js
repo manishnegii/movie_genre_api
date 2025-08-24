@@ -32,7 +32,7 @@ app.post('/api/genres',(req,res)=>{
 
 app.put('/api/genres/:id',(req,res)=>{
    const genre = genres.find(c=>c.id === parseInt(req.params.id));
-    // if(!genre) res.status(404).send("Wrong Request"); 
+    if(!genre) res.status(404).send("Wrong Request"); 
 
 
     if(!req.body.name || req.body.name.length < 3) res.status(401).json({error:"Name Required"});
@@ -41,5 +41,19 @@ app.put('/api/genres/:id',(req,res)=>{
     res.json(genre);
 });
 
+app.delete('/api/genres/:id',(req,res)=>{
+   const genre = genres.find(c=>c.id === parseInt(req.params.id));
+    if(!genre) res.status(404).send("Wrong Request"); 
+
+
+    if(!req.body.name || req.body.name.length < 3) res.status(401).json({error:"Name Required"});
+
+    genre = genres.filter(g=>g.id !== genre.id)
+    res.json({message:"Deleted Sucessfully",deleted:genre});
+});
+
+
+
 const PORT = process.env.port || 3000;
+
 app.listen(PORT,()=>console.log("Server Running On 3000"));
